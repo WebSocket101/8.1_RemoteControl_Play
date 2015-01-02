@@ -1,0 +1,68 @@
+@(sid: String)
+@main("Controller"){
+	<button id="left">Left</button>
+	<button id="right">Right</button>
+	<button id="up">Up</button>
+	<button id="down">Down</button>
+	<script>
+	var is_touch_device = 'ontouchstart' in document.documentElement;
+	   var socket = new WebSocket("ws://"+window.location.host+"/con")
+	   var sid = "@sid";
+	   var message = {sid:sid,command:""}
+	   if(is_touch_device){
+	    touch();
+	   }
+	   else{
+	    click();
+	   }
+	   
+	   function touch(){
+	    $('#left').bind('touchstart',function(e){
+	     e.preventDefault();
+	     message.command = "left";
+	     socket.send(JSON.stringify(message))
+	     
+	    });
+	   
+	    $('#right').bind('touchstart',function(e){
+	     e.preventDefault();
+	     message.command = "right";
+	     socket.send(JSON.stringify(message))
+	    });
+	   
+	    $('#up').bind('touchstart',function(e){
+	     e.preventDefault();
+	     message.command = "up";
+	     socket.send(JSON.stringify(message))
+	    });
+	   
+	    $('#down').bind('touchstart',function(e){
+	     e.preventDefault();
+	     message.command = "down";
+	     socket.send(JSON.stringify(message))
+	    });
+	   }
+
+	   function click(){
+	    $('#left').click(function(){
+	      message.command = "left";
+	      socket.send(JSON.stringify(message))
+	   })
+	   
+	   $('#right').click(function(){
+		   message.command = "right";
+		   socket.send(JSON.stringify(message))
+	   })
+	    
+	   $('#down').click(function(){
+		   message.command = "down";
+		   socket.send(JSON.stringify(message))
+	   });
+	   
+	   $('#up').click(function(){
+		   message.command = "up";
+		   socket.send(JSON.stringify(message))
+	    });
+	   }
+	</script>
+}
